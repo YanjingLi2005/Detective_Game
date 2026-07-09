@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第7名候选人 · 暗潮</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Courier New', monospace;
+            background-color: #0b0b0c;
+            color: #d1d1d6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #game-container {
+            width: 100%;
+            max-width: 800px;
+            min-height: 100vh;
+            background-color: #141416;
+            border-left: 1px solid #2c2c2e;
+            border-right: 1px solid #2c2c2e;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        #image-slot {
+            width: 100%;
+            height: 320px;
+            background-color: #1c1c1e;
+            border: 1px dashed #3a3a3c;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #636366;
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: all 0.5s ease;
+            background-size: cover;
+            background-position: center;
+        }
+        #story-viewport {
+            flex-grow: 1;
+            font-size: 17px;
+            line-height: 1.85;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            white-space: pre-wrap;
+            color: #e5e5ea;
+        }
+        .choices-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .action-choice-btn {
+            background-color: #1c1c1e;
+            color: #ffffff;
+            border: 1px solid #3a3a3c;
+            padding: 18px 24px;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .action-choice-btn:hover {
+            background-color: #2c2c2e;
+            border-color: #8e8e93;
+            transform: translateY(-1px);
+        }
+        .action-choice-btn:active {
+            transform: translateY(1px);
+        }
+        .dead-banner {
+            color: #ff453a;
+            font-size: 22px;
+            font-weight: bold;
+            border-bottom: 2px solid #ff453a;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .st-review-box {
+            color: #ff9500;
+            background: rgba(255, 149, 0, 0.1);
+            padding: 15px 20px;
+            border-left: 4px solid #ff9500;
+            margin-top: 25px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<div id="game-container">
+    <div id="image-slot">【 场景镜头占位符 】</div>
+    <div id="story-viewport">正在初始化档案...</div>
+    <div id="choices-panel" class="choices-layout"></div>
+</div>
+<script>
+    let globalState = {
+        currentScene: "prologue",
+        diversionPlan: "",
+        chargerSabotaged: false,
+        phoneDead: false,
+        borrowCharger: false,
+        murderMethod: "",
+        sceneCleaned: false,
+        wheelchairMoved: false,
+        evidenceLeft: false,
+        alibiBroken: false,
+        survived: false
+    };
+
+    const gameScript = {
+
+        prologue: {
+            img: "深夜 电脑屏幕的冷光",
+            text: `白鹭造纸厂停产后的第四十二天，你收到了青江纸业的最终面试通知。
+
+十九年前，你第一次站上检验台时，师傅把一团刚出蒸煮罐的纸浆摊在灯下，教你看纤维的长度、颜色和含水量。
+
+“机器能给你一个数字。”他说，“但只有人的手才能摸出好坏。”
+
+后来，你也有了自己的判断方法。你知道哪一批木片在雨里放得太久，知道漂白剂过量时纸浆会留下怎样刺鼻的甜味，知道一张纸在真正断裂之前，纤维会先发出什么声音。
+
+直到集团收购工厂。新的自动化系统接管了一切。你们被要求站在黄线外，看着机器学习你们工作。
+
+你回答了所有问题。所以两个月后，公司不再需要你了。
+
+旧生产线关闭那天，检验台被拆走。那盏你用了十九年的灯被扔进废料车，灯罩上还留着你用铅笔写下的刻度。人事部给每个人发了一只灰色信封，感谢你们为企业自动化转型作出的贡献。
+
+附近三座城镇里，只有青江纸业还保留着人工检验纸浆的岗位。那里使用的是一条四十年前建成的旧生产线，机器会漏判杂质，传感器分不出潮湿木料与腐坏木料的区别。
+
+名额只有一个，但进入最终面试的一共有七个人。
+
+你认识其中三个。他们和你一样，来自已经停产或完成自动化改造的工厂。另外三个，你只在名单上见过名字。
+
+当天晚上十一点十七分，一封没有发件人的邮件进入了你的邮箱。
+
+邮件中附有六份文件。每份文件都以一名申请者的姓名命名：
+
+【韩庆国】
+【陈雨】
+【刘斌】
+【魏兰】
+【沈木】
+
+以及一份没有名字的空白档案。
+
+邮件正文只有一句话：
+
+“如果没有别的候选人呢。”
+
+你盯着这句话看了很久。
+
+电脑旁边放着那只灰色的裁员信封。信封下面压着你的旧检验员证，塑料外壳已经发黄。照片上的你三十一岁，穿着刚领到的蓝色工服，胸前印着白鹭造纸厂的厂徽。
+
+那时候，你以为自己会在这里工作到退休。
+
+屏幕右下角忽然弹出了第二条消息。
+
+“第一名候选人明天下午三点会去松柏养老院。他妻子失智，每周三下午他都会去活动室。护工姓王，四十五岁，非常尽职，几乎寸步不离。”`,
+            choices: [
+                { text: "打开韩庆国的档案，寻找破绽", next: "view_han_profile" },
+                { text: "直接删除邮件，靠实力面试", next: "end_delete_mail" }
+            ]
+        },
+
+        end_delete_mail: {
+            img: "正常面试大厅的日光灯",
+            text: `你删除了邮件。你没有被录取。普通结局：错失良机`,
+            choices: [{ text: "↩ 回溯到决策点", next: "prologue" }]
+        },
+
+        view_han_profile: {
+            img: "韩庆国的发黄黑白档案照",
+            text: `你打开了韩庆国的档案。韩庆国，53岁，原造纸厂质检科科长。每周三下午三点，他都会去松柏养老院探望他神志不清的妻子。
+
+档案最下方亮起一行红字：“养老院活动室没有监控。护工王姐，四十五岁，尽职尽责，几乎从不离开韩庆国身边。”
+
+你合上档案，陷入沉思。护工不离开，你就没法动手。你必须想一个办法，让王姐在某个时间段必须离开活动室。
+
+你决定先去养老院外围踩点。`,
+            choices: [
+                { text: "前往养老院外围观察", next: "recon_养老院" }
+            ]
+        },
+
+        recon_养老院: {
+            img: "养老院对面的茶馆 二楼窗边",
+            text: `你在养老院斜对面的茶馆二楼坐了一个下午。你观察到以下信息：
+
+1. 王姐确实寸步不离。她推韩庆国进活动室后，就坐在旁边织毛衣、看手机，偶尔起身倒水，但从不离开视线超过两分钟。
+
+2. 下午三点左右，王姐会掏出手机打一个电话。你听不清内容，但看她表情轻松，像是在跟家人聊天。电话持续大约十五到二十分钟。但是她不会离开活动室，你没法趁这个机会进去。
+
+4. 你注意到一个细节：王姐的手机充电线插在活动室的插座上，但那个插座似乎接触不良，她有时会把手机放在窗台上充电。
+
+你回到住处，开始制定计划。`,
+            choices: [
+                { text: "方案A：伪造院长电话，把她支去办公楼", next: "plan_phone" },
+                { text: "方案B：在养老院后院制造火警，把她引开", next: "plan_fire" },
+                { text: "方案C：买通王姐，让她自己离开一会儿", next: "plan_bribe" },
+                { text: "方案D：冒充家属送药，在她眼皮底下动手", next: "plan_medicine" },
+                { text: "方案E：破坏她的充电器，让她必须去值班室用座机", next: "plan_charger" }
+            ]
+        },
+
+        plan_phone: {
+            img: "电话机 变声器",
+            text: `你决定冒充养老院院长，打电话让王姐去办公楼取一份“紧急文件”。
+
+你买了一个变声器，模仿院长的声音——你听过院长在门口跟人说话，声音低沉、略带沙哑。
+
+你拨通了养老院前台的电话，转接给王姐。
+
+“王姐吗？我是李院长。我办公室有一份韩庆国的病历需要马上送到医务室，你现在过来拿一下。”
+
+电话那头沉默了两秒。
+
+“院长？”王姐的声音有些疑惑，“您今天不是请假了吗？我早上看到您太太发朋友圈，说您去市里看病了。”
+
+你心里一沉。`,
+            choices: [
+                { text: "强行圆谎：“我提前回来了，你现在过来。”", next: "plan_phone_force" },
+                { text: "挂断电话，放弃这个方案", next: "plan_phone_abort" }
+            ]
+        },
+
+        plan_phone_force: {
+            img: "电话听筒 冷汗",
+            text: `你硬着头皮说：“我提前回来了。你现在过来，文件很急。”
+
+王姐迟疑了一下：“……好的，院长，我马上来。”
+
+你挂断电话，心跳如鼓。她信了吗？
+
+你看到活动室的窗户里，王姐站起身，对韩庆国说了句什么，然后走出了活动室。
+
+你成功了。你有大约十分钟的时间。
+
+你快步走向活动室。推开门——韩庆国坐在轮椅上，背对着你，望着窗外。
+
+他没有回头。
+
+你从口袋里掏出了……`,
+            choices: [
+                { text: "A. 浸过乙醚的手帕", next: "kill_ether" },
+                { text: "B. 枕头", next: "kill_pillow" },
+                { text: "C. 注射器（氯化钾）", next: "kill_injection" }
+            ]
+        },
+
+        plan_phone_abort: {
+            img: "废弃的方案 纸篓",
+            text: `你挂断了电话。王姐的警觉让你意识到这个方案太冒险了——她认识院长的声音，你不可能模仿得完美。
+
+你回到住处，重新思考其他方案。`,
+            choices: [{ text: "尝试其他方案", next: "recon_养老院" }]
+        },
+
+        plan_fire: {
+            img: "养老院后院 垃圾桶",
+            text: `你决定在养老院后院制造一场小火警——点燃一个垃圾桶，冒烟后引发警报，所有人都会被疏散到前院。
+
+你提前准备了打火机和一捆旧报纸。周三下午两点四十五分，你翻过养老院后墙，来到后院。
+
+你点燃了报纸，扔进垃圾桶。火苗窜起，黑烟升腾。
+
+你躲进灌木丛，等待混乱。
+
+但五分钟过去了，没有人出来。火势开始变大，垃圾桶发出噼啪声。
+
+你探头一看——养老院的后门紧闭，窗户也关着。空气循环系统把烟抽走了，里面的人根本没闻到。
+
+火势失控了。垃圾桶旁边的干枯灌木被引燃，火舌舔向木质屋檐。
+
+你意识到：这不是小火警，这是火灾。`,
+            choices: [
+                { text: "冲进去大喊“着火了”，强行制造混乱", next: "plan_fire_hero" },
+                { text: "立刻逃跑，放弃这个方案", next: "plan_fire_escape" }
+            ]
+        },
+
+        plan_fire_hero: {
+            img: "燃烧的养老院后墙",
+            text: `你冲进养老院大门，大喊：“着火了！后院着火了！”
+
+顿时一片混乱。护工、护士、老人被疏散到前院。王姐推着韩庆国出来了。
+
+你在人群中看到了韩庆国的轮椅。王姐正忙着安抚其他老人，韩庆国被放在前院的角落里，暂时无人看管。
+
+你走过去，蹲在他面前，手里捏着一支注射器。
+
+“你是谁？”韩庆国抬起头，浑浊的眼睛看着你。
+
+你笑了笑：“我是来帮你的。”
+
+你在他颈部推入了氯化钾。他抽搐了一下，然后软倒在轮椅上。
+
+你站起来，混入人群中。没有人注意到你。
+
+三天后，你坐在面试室里。陈警官盯着你：“韩庆国死于高钾血症，法医认为是自然原因。但你那天为什么出现在养老院？”`,
+            choices: [
+                { text: "回答：“我是路过的，看到着火就帮忙疏散。”", next: "interrogate_fire" }
+            ]
+        },
+
+        plan_fire_escape: {
+            img: "远处 消防车鸣笛",
+            text: `你逃了。火势最终被消防队扑灭，但养老院后墙烧毁了一部分。警方调查监控，拍到了一个模糊的身影翻墙逃跑。
+
+你没有被直接指认，但你不敢再靠近养老院了。
+
+韩庆国活了下来。你失去了第一轮机会。`,
+            choices: [{ text: "↩ 回溯到方案选择", next: "recon_养老院" }]
+        },
+
+        plan_bribe: {
+            img: "信封 现金",
+            text: `你决定直接收买王姐。你准备了一个信封，里面装着五千块钱。
+
+你在养老院门口的巷子里拦住了她。
+
+“王姐，我是韩庆国的远房侄子。我想跟叔叔单独聊几分钟，有些家里的事不方便当着外人说。”
+
+王姐皱了皱眉：“你是他侄子？我怎么没见过你？”
+
+你递过信封：“这是一点心意，您去喝杯茶，十五分钟就行。”
+
+王姐捏了捏信封的厚度，表情有些动摇。但她很快把信封推了回来：“韩师傅的家属我都认识，你是假的。你再不走，我喊保安了。”`,
+            choices: [
+                { text: "加钱，加到一万", next: "plan_bribe_more" },
+                { text: "放弃，离开", next: "plan_bribe_abort" }
+            ]
+        },
+
+        plan_bribe_more: {
+            img: "更厚的信封",
+            text: `你咬咬牙，从口袋里又掏出一叠现金，凑够了一万。
+
+“王姐，我真的有急事。叔叔他……他年轻时候欠我们家一笔钱，我想当面问清楚。您就行个方便。”
+
+王姐盯着那叠钱，看了很久。然后她叹了口气。
+
+“你只有十五分钟。我在门口守着，你要是敢对韩师傅做什么，我立刻报警。”
+
+她接过钱，转身走向大门，背对着你，在台阶上坐了下来。
+
+你成功了。你推开了活动室的门。`,
+            choices: [
+                { text: "A. 乙醚手帕", next: "kill_ether" },
+                { text: "B. 枕头", next: "kill_pillow" },
+                { text: "C. 注射氯化钾", next: "kill_injection" }
+            ]
+        },
+
+        plan_bribe_abort: {
+            img: "空巷 风",
+            text: `你收起了钱。王姐的警惕性太高了，这条路走不通。你只能另想办法。`,
+            choices: [{ text: "尝试其他方案", next: "recon_养老院" }]
+        },
+
+        plan_medicine: {
+            img: "药瓶 白大褂",
+            text: `你决定冒充韩庆国的主治医生，以“调整用药”为借口进入活动室。你提前弄到了一件白大褂，还伪造了一张医院工作证。
+
+周三下午两点五十分，你走进养老院，径直来到活动室。
+
+“王姐？我是韩庆国的主治医生，老张今天请假，我来替他做一次用药评估。”
+
+王姐上下打量了你一番：“张医生？我怎么没见过你？”
+
+你面不改色：“我是新来的住院医，张医生让我跑一趟。”
+
+王姐犹豫了一下，但还是打开了门：“那您请进，韩师傅在里头。”
+
+你走进了活动室。王姐没有离开——她站在门口，看着你。
+
+你必须在她的注视下动手。`,
+            choices: [
+                { text: "A. 装作听诊，趁机用注射器", next: "kill_injection_observed" },
+                { text: "B. 放弃，假装检查完毕离开", next: "plan_medicine_abort" }
+            ]
+        },
+
+        kill_injection_observed: {
+            img: "听诊器 注射器",
+            text: `你戴上听诊器，走近韩庆国。他安静地坐在轮椅上，目光呆滞。
+
+“韩师傅，我给您检查一下心率。”你俯下身，同时右手悄悄摸向口袋里的注射器。
+
+你刚抽出注射器，王姐的声音从背后响起：“医生，您拿的是什么？”
+
+你僵住了。`,
+            choices: [
+                { text: "“胰岛素，他血糖有点高。”", next: "kill_injection_observed_insulin" },
+                { text: "转身就跑", next: "end_medicine_caught" }
+            ]
+        },
+
+        kill_injection_observed_insulin: {
+            img: "注射器 胰岛素瓶",
+            text: `你镇定地晃了晃注射器：“胰岛素，他血糖有点高，需要补一针。”
+
+王姐皱了皱眉：“韩师傅没有糖尿病啊，病历上从来没写过。”
+
+你心里一沉。你踩到雷了。
+
+王姐按下了墙上的呼叫铃。`,
+            choices: [{ text: "结局：暴露", next: "end_medicine_caught" }]
+        },
+
+        end_medicine_caught: {
+            img: "警车",
+            text: `<div class="dead-banner">结局 4/18：假医生的破绽</div>保安冲进来把你按在地上。警方在你口袋里搜出了氯化钾注射器和伪造的工作证。
+
+你以谋杀未遂被逮捕。`,
+            choices: [{ text: "↩ 回溯到方案选择", next: "recon_养老院" }]
+        },
+
+        plan_medicine_abort: {
+            img: "活动室 门",
+            text: `你假装检查完毕，对王姐点了点头：“一切正常，药不用换。”
+
+你走出了养老院，后背全是冷汗。这条路太险了。`,
+            choices: [{ text: "尝试其他方案", next: "recon_养老院" }]
+        },
+
+        plan_charger: {
+            img: "充电器 插座",
+            text: `你回忆了下午的观察——王姐的手机充电线插在活动室的插座上，但那个插座接触不良。她有时会把手机放在窗台上充电，但充得很慢。
+
+一个计划在你脑中成型：如果她的手机彻底没电，充电器也坏了，她就会去值班室用座机打电话。
+
+而值班室在走廊尽头，离活动室大约三十米。她一去一回，至少二十分钟。
+
+但这需要提前准备：你必须在前一天潜入养老院，在插座上做手脚——让充电器短路，烧坏她的手机电池。
+
+你决定执行这个计划。`,
+            choices: [
+                { text: "前一天潜入养老院，破坏充电器", next: "charger_sabotage" }
+            ]
+        },
+
+        charger_sabotage: {
+            img: "螺丝刀 电线",
+            text: `你穿上一件灰色的工装外套，口袋里装着螺丝刀和一小段铜线。你伪装成电路维修工，在周二下午走进了养老院。
+
+前台问你来做什么，你晃了晃手里的工具包：“电力公司巡检，检查一下线路老化。”
+
+前台没有多问，让你进去了。
+
+你来到活动室。王姐正在推韩庆国在走廊里散步，活动室空无一人。
+
+你走到墙角，蹲下来，拔掉了充电器。你用螺丝刀拆开充电头，用铜线短接了其中的两根引脚——这样当它再次插入手机时，会造成瞬间电流过载，烧坏手机电池。
+
+你把充电器重新插回插座，看起来一切如常。
+
+然后你离开了。心跳如鼓。
+
+周三下午，你回到养老院斜对面的茶馆，等待。两点五十分，王姐推着韩庆国进了活动室。她掏出手机，插上充电器。
+
+大约十分钟后，你看到王姐拿起手机，眉头紧皱。她反复按了按电源键，又把充电线拔了重新插。
+
+手机没有任何反应。
+
+王姐低声骂了一句，站起来，对韩庆国说了句什么，然后走出活动室，朝走廊尽头的值班室走去。
+
+她离开了。你有二十分钟。`,
+            choices: [
+                { text: "立刻进入活动室", next: "charger_execute" }
+            ]
+        },
+
+        charger_execute: {
+            img: "空无一人的活动室 轮椅背影",
+            text: `你推开活动室的门。韩庆国坐在轮椅上，背对着你，望着窗外午后的阳光。
+
+他听见了脚步声，但没有回头。
+
+“王姐？”他声音沙哑，“我的水杯空了。”
+
+你没有回答。你走到他身后，从口袋里掏出了……`,
+            choices: [
+                { text: "A. 浸过乙醚的手帕（无声）", next: "kill_ether_charger" },
+                { text: "B. 枕头（模拟心脏病）", next: "kill_pillow_charger" },
+                { text: "C. 注射氯化钾（精准）", next: "kill_injection_charger" }
+            ]
+        },
+
+        kill_ether_charger: {
+            img: "手帕 轮椅",
+            text: `你从口袋里掏出那块浸透了乙醚的手帕，猛地捂住韩庆国的口鼻。
+
+他剧烈挣扎了几秒，轮椅在地板上发出刺耳的摩擦声。但很快，他的身体软了下去，手臂无力地垂下。
+
+你测了脉搏——死了。
+
+乙醚挥发很快，不会留下明显痕迹。但轮椅被撞离了窗台，地面有一道浅浅的划痕。
+
+王姐还有大约十五分钟回来。你需要处理现场。`,
+            choices: [
+                { text: "A-1. 把轮椅推回原位，用湿布擦掉划痕，离开", next: "scene_clean_ether" },
+                { text: "A-2. 把轮椅推回原位，打翻水杯伪装成意外摔倒", next: "scene_fake_fall_ether" },
+                { text: "A-3. 什么都不做，立刻离开", next: "end_ether_leave" }
+            ]
+        },
+
+        kill_pillow_charger: {
+            img: "枕头 轮椅",
+            text: `你拿起沙发上的靠枕，压在他的脸上。他挣扎了不到二十秒，手臂无力地垂下。
+
+你迅速把枕头放回原位，检查脉搏——没了。他看上去就像突发心脏病。
+
+但轮椅的位置因为挣扎偏离了窗台，而且他的手指甲里可能残留枕头的纤维。
+
+王姐还有十五分钟回来。`,
+            choices: [
+                { text: "B-1. 把轮椅推回原位，戴上手套清理他指甲缝", next: "scene_clean_pillow" },
+                { text: "B-2. 不处理轮椅，立刻离开", next: "end_wheelchair_trace" }
+            ]
+        },
+
+        kill_injection_charger: {
+            img: "注射器 氯化钾",
+            text: `你从口袋里取出注射器，里面是浓度为15%的氯化钾溶液。
+
+你走到韩庆国身后，迅速在他颈部找到颈静脉，刺入注射器，推入药液。
+
+他几乎没有挣扎。氯化钾会让心脏在几秒钟内停跳，外表看起来就像突发性心律失常。
+
+你拔出针头，伤口极小，几乎看不见。
+
+你检查了现场——轮椅几乎没有移动，他的姿势自然，没有任何挣扎痕迹。
+
+完美。你只需要把注射器收好，离开。`,
+            choices: [
+                { text: "离开养老院", next: "charger_injection_success" }
+            ]
+        },
+
+        charger_injection_success: {
+            img: "养老院大门 夕阳",
+            text: `你从后门离开了养老院。没有人看到你。
+
+三天后，你坐在青江纸业的面试室里。对面是主考官和一位眼神锐利的便衣警察——陈警官。
+
+陈警官翻着韩庆国的死亡报告：“韩庆国，53岁，死因：突发性心律失常。法医未发现外伤或中毒迹象。护工王姐证实，当天下午她因为手机故障去值班室打电话，离开约二十分钟。”
+
+他抬起头，盯着你：“周诚，周三下午三点左右，你在哪里？”
+
+你平静地回答：“我在家准备面试，没有外出。”
+
+陈警官沉默了一会儿：“王姐说，她离开前，活动室的充电器似乎被人动过。你有什么想说的吗？”
+
+你心里一紧——但你没有露出任何表情。`,
+            choices: [
+                { text: "“我不知道什么充电器。我那天没出门。”", next: "interrogate_charger_success" },
+                { text: "“充电器？也许是老化了，我看到那插座接触不良。”", next: "interrogate_charger_clever" }
+            ]
+        },
+
+        interrogate_charger_success: {
+            img: "审讯室 冷白灯光",
+            text: `你直视陈警官的眼睛，语气平静：“我不知道什么充电器。我那天没出门。”
+
+陈警官盯着你，目光如刀。但他没有证据——你没有留下指纹，没有留下DNA，韩庆国的死因被法医判定为自然原因。
+
+他缓缓合上笔记本：“你可以走了。”
+
+你走出大楼，阳光刺眼。屏幕右下角，那封邮件再次闪烁——韩庆国的名字被一道横线划掉。
+
+下一行字浮现：“第二名候选人陈雨，明天下午一点，青江河道第三检测站。”
+
+你赢了第一局。`,
+            choices: [{ text: "进入第二章（开发中）", next: "prologue" }]
+        },
+
+        interrogate_charger_clever: {
+            img: "审讯室 闪烁的灯",
+            text: `你微微皱眉，像是回忆：“充电器？我倒是注意过那插座，之前去养老院看亲戚的时候看到过，接触确实不太好，可能是老化了。”
+
+陈警官的表情没有变化，但他低头在笔记本上写了几笔。
+
+“你知道得挺清楚。”他说，“你去养老院看过亲戚？”
+
+你意识到自己说漏了嘴——你刚才说“没出门”，现在又说“去过养老院看亲戚”。
+
+你改口：“我是说，之前去过，不是那天。”
+
+陈警官抬起头，嘴角带着一丝冷笑：“周诚，你的话前后矛盾。跟我回局里，我们慢慢聊。”`,
+            choices: [{ text: "结局：证词破裂", next: "end_alibi_broken" }]
+        },
+
+        end_alibi_broken: {
+            img: "手铐",
+            text: `<div class="dead-banner">结局 6/18：自相矛盾的证词</div>你因为证词前后矛盾，被警方列为重点嫌疑人。虽然缺乏直接物证，但心理压力下，你最终承认了部分事实。
+
+你被判过失致人死亡，刑期八年。`,
+            choices: [{ text: "↩ 回溯到审讯", next: "charger_injection_success" }]
+        },
+
+        scene_clean_ether: {
+            img: "空无一人的活动室 窗台",
+            text: `你动作极快，把轮椅推回窗台原位，用湿布擦掉了地面上的划痕。乙醚已经挥发，空气中只有淡淡的气味，窗户开了一条缝，风很快就能吹散。
+
+你最后检查了一遍：没有指纹，没有脚印。
+
+你从后门离开。三天后面试室，陈警官没有找到任何破绽。
+
+你通过了第一章。`,
+            choices: [{ text: "进入第二章（开发中）", next: "prologue" }]
+        },
+
+        scene_fake_fall_ether: {
+            img: "打翻的水杯 轮椅",
+            text: `你故意打翻了韩庆国手边的水杯，水渍漫到轮椅脚下，然后你把轮椅推回原位，把他的手臂摆成试图够水杯的姿势。这样看起来就像是他突发眩晕，挣扎时打翻了水杯。
+
+你甚至把水杯塞进了他微张的手里。
+
+你从后门离开。三天后面试室，陈警官拿出了一张照片：“韩庆国右手无名指上有一道新鲜的擦伤，是你弄的吗？”
+
+你愣住了。你忘了检查他的手指。`,
+            choices: [
+                { text: "“可能是摔倒时擦伤的。”", next: "interrogate_fake_fall" }
+            ]
+        },
+
+        interrogate_fake_fall: {
+            img: "放大镜下的擦伤",
+            text: `“可能是摔倒时擦伤的。”你尽量镇定。
+
+陈警官冷笑：“新闻没有报道他手上有擦伤。你怎么知道的？”
+
+你沉默。你无法解释。
+
+“周诚，你涉嫌故意杀人，跟我们走一趟。”`,
+            choices: [{ text: "↩ 回溯到现场处理", next: "scene_fake_fall_ether" }]
+        },
+
+        end_ether_leave: {
+            img: "蓝红交替的警灯",
+            text: `<div class="dead-banner">结局 7/18：划痕的证词</div>你什么都没处理就离开了。护工回来发现轮椅移位、地面划痕，立刻报警。
+
+警方在轮椅扶手上提取到了你的皮屑。你在家中被捕。`,
+            choices: [{ text: "↩ 回溯到杀人阶段", next: "kill_ether_charger" }]
+        },
+
+        end_wheelchair_trace: {
+            img: "轮椅 地面划痕",
+            text: `<div class="dead-banner">结局 8/18：无法滚动的轮椅</div>护工回来后立刻发现轮椅位置不对，地面有明显的拖拽划痕。她报了警。
+
+警方在轮椅扶手内侧提取到了你的皮屑。
+
+你没能进入面试室，就在家门口被带走了。`,
+            choices: [{ text: "↩ 回溯到杀人阶段", next: "kill_pillow_charger" }]
+        },
+
+        scene_clean_pillow: {
+            img: "清理完毕的活动室",
+            text: `你戴上手套，仔细清理了韩庆国的指甲缝，确认没有残留纤维。你把轮椅推回窗台原位，擦掉了地面上的划痕。
+
+一切恢复如初。
+
+你从后门离开。三天后面试室，陈警官没有找到任何证据。
+
+你通过了第一章。`,
+            choices: [{ text: "进入第二章（开发中）", next: "prologue" }]
+        },
+
+        kill_ether: {
+            img: "手帕 轮椅",
+            text: `你从口袋里掏出那块浸透了乙醚的手帕，猛地捂住韩庆国的口鼻。
+
+他剧烈挣扎了几秒，轮椅在地板上发出刺耳的摩擦声。但很快，他的身体软了下去。
+
+你测了脉搏——死了。
+
+乙醚挥发很快，不会留下明显痕迹。但轮椅被撞离了窗台，地面有一道浅浅的划痕。
+
+你需要处理现场。`,
+            choices: [
+                { text: "A-1. 把轮椅推回原位，用湿布擦掉划痕，离开", next: "scene_clean_ether" },
+                { text: "A-2. 把轮椅推回原位，打翻水杯伪装成意外摔倒", next: "scene_fake_fall_ether" },
+                { text: "A-3. 什么都不做，立刻离开", next: "end_ether_leave" }
+            ]
+        },
+
+        kill_pillow: {
+            img: "枕头 轮椅",
+            text: `你拿起沙发上的靠枕，压在他的脸上。他挣扎了不到二十秒，手臂无力地垂下。
+
+你迅速把枕头放回原位，检查脉搏——没了。他看上去就像突发心脏病。
+
+但轮椅的位置因为挣扎偏离了窗台，而且他的手指甲里可能残留枕头的纤维。`,
+            choices: [
+                { text: "B-1. 把轮椅推回原位，戴上手套清理他指甲缝", next: "scene_clean_pillow" },
+                { text: "B-2. 不处理轮椅，立刻离开", next: "end_wheelchair_trace" }
+            ]
+        },
+
+        kill_injection: {
+            img: "注射器 氯化钾",
+            text: `你从口袋里取出注射器，里面是浓度为15%的氯化钾溶液。
+
+你走到韩庆国身后，迅速在他颈部找到颈静脉，刺入注射器，推入药液。
+
+他几乎没有挣扎。氯化钾会让心脏在几秒钟内停跳，外表看起来就像突发性心律失常。
+
+你拔出针头，伤口极小，几乎看不见。
+
+你检查了现场——轮椅几乎没有移动，他的姿势自然，没有任何挣扎痕迹。
+
+完美。你只需要把注射器收好，离开。`,
+            choices: [
+                { text: "离开养老院", next: "charger_injection_success" }
+            ]
+        },
+
+        interrogate_fire: {
+            img: "审讯室 火灾照片",
+            text: `陈警官盯着你：“你当时在现场。火灾发生前，有人看到一个人影翻墙进入养老院后院。监控拍到了一个模糊的画面。”
+
+他推过一张照片，上面是一个模糊的背影。
+
+“是你吗？”
+
+你摇头：“不是我。我听到呼救才跑进去帮忙的。”
+
+陈警官看了你很久，然后收回照片：“你可以走了。”
+
+你走出了大楼。但你心里清楚——他怀疑你，只是没有证据。`,
+            choices: [{ text: "进入第二章（开发中）", next: "prologue" }]
+        },
+
+        charger_fail_borrow: {
+            img: "借来的充电器",
+            text: `你破坏了充电器，但王姐没有去值班室用座机——她找隔壁护工借了一个备用充电器，在活动室里继续打电话。
+
+你失去了机会。`,
+            choices: [{ text: "↩ 回溯到方案选择", next: "recon_养老院" }]
+        },
+
+        charger_fallback: {
+            img: "夜色中的养老院",
+            text: `你的充电器破坏计划失败了——王姐借到了备用充电器。
+
+但你还有机会。你可以尝试其他方案。`,
+            choices: [
+                { text: "尝试其他方案", next: "recon_养老院" }
+            ]
+        }
+    };
+
+    function renderScene(sceneKey) {
+        globalState.currentScene = sceneKey;
+        const scene = gameScript[sceneKey];
+        if (!scene) {
+            document.getElementById('story-viewport').innerHTML = '场景加载失败，请刷新页面。';
+            return;
+        }
+
+        const imgSlot = document.getElementById('image-slot');
+        imgSlot.textContent = `[ 画面特写：${scene.img || "无"} ]`;
+
+        const storyViewport = document.getElementById('story-viewport');
+        storyViewport.innerHTML = scene.text;
+
+        const choicesPanel = document.getElementById('choices-panel');
+        choicesPanel.innerHTML = '';
+
+        if (scene.choices && scene.choices.length > 0) {
+            scene.choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'action-choice-btn';
+                btn.innerHTML = choice.text;
+                btn.onclick = () => renderScene(choice.next);
+                choicesPanel.appendChild(btn);
+            });
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    renderScene("prologue");
+</script>
+</body>
+</html>
